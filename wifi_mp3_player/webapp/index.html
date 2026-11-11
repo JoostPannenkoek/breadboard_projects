@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Breadboard MP3 Player</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🎵 Breadboard MP3 Player</h1>
+    <p class="subtitle">Pick your MP3s, and they play on the speaker on your breadboard.</p>
+  </header>
+
+  <main>
+    <!-- 1. Connect to the player -->
+    <section class="card" id="connect-card">
+      <h2>1. Connect to your player</h2>
+      <form id="connect-form" class="row">
+        <label for="address" class="visually-hidden">Player address</label>
+        <input id="address" type="text" value="mp3player-1.local" spellcheck="false"
+               autocomplete="off" placeholder="mp3player-1.local or 192.168.1.42">
+        <button id="connect-button" type="submit" class="primary">Connect</button>
+      </form>
+      <p class="status"><span id="status-dot" class="dot"></span> <span id="status-text">Not connected</span></p>
+      <p id="connect-help" class="help" hidden>
+        Can't connect? Check that the player and this laptop use the <b>same WiFi</b>,
+        that the name matches <code>DEVICE_NAME</code> in <code>config.h</code>,
+        or type the IP address from the Serial Monitor instead.
+      </p>
+    </section>
+
+    <!-- 2. Now playing -->
+    <section class="card" id="now-card">
+      <h2>2. Now playing</h2>
+      <p id="now-title" class="now-title">Nothing yet</p>
+      <div class="progress-row">
+        <span id="time-now">0:00</span>
+        <div class="progress"><div id="progress-bar"></div></div>
+        <span id="time-total">0:00</span>
+      </div>
+      <div class="controls">
+        <button id="prev-button" title="Previous song" aria-label="Previous">⏮</button>
+        <button id="play-button" class="primary big" title="Play / pause" aria-label="Play">▶</button>
+        <button id="next-button" title="Next song" aria-label="Next">⏭</button>
+      </div>
+      <div class="volume-row">
+        <label for="volume">🔈 Volume</label>
+        <input id="volume" type="range" min="0" max="100" value="40">
+        <span id="volume-value">40</span>
+      </div>
+    </section>
+
+    <!-- 3. Playlist -->
+    <section class="card" id="playlist-card">
+      <h2>3. Playlist</h2>
+      <ol id="playlist"></ol>
+      <label id="dropzone" class="dropzone">
+        <input id="file-input" type="file" accept=".mp3,audio/*" multiple>
+        <span>➕ <b>Add MP3 files</b>, or drag them here</span>
+      </label>
+    </section>
+
+    <!-- 4. What's happening inside? -->
+    <details class="card" id="log-card">
+      <summary><h2>4. Message log: see what's happening inside</h2></summary>
+      <p class="stats" id="stats">Sent: 0 KB · Speed: 0 KB/s · Credits: 0</p>
+      <label class="check"><input id="show-credits" type="checkbox"> Show <code>credit</code> messages (there are a lot!)</label>
+      <div id="log" class="log" aria-live="polite"></div>
+      <form id="command-form" class="row">
+        <label for="command" class="visually-hidden">Command</label>
+        <input id="command" type="text" placeholder="Type a command, e.g.  beep 440 500" spellcheck="false" autocomplete="off">
+        <button type="submit">Send</button>
+      </form>
+      <p class="help">Try: <code>ping</code>, <code>volume 20</code>, <code>beep 440 500</code>, <code>pause</code>, <code>resume</code></p>
+    </details>
+  </main>
+
+  <!-- The code. Read device.js first, then player.js, then app.js. -->
+  <script src="device.js"></script>
+  <script src="player.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

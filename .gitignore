@@ -53,3 +53,9 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# WiFi MP3 player: never commit WiFi passwords or test output
+secrets.h
+received.wav
+__pycache__/
+.venv/

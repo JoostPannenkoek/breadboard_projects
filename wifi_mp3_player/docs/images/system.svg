@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="330" viewBox="0 0 900 330" role="img" aria-label="How the music travels">
+<title>How the music travels</title>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="20" fill="#1f1d2b" text-anchor="start" font-weight="bold" font-family="sans-serif">How the music travels</text>
+<rect x="24.0" y="60.0" width="250.0" height="175.0" rx="12" fill="#ece8ff" stroke="#333" stroke-width="1.5"/>
+<text x="149.0" y="86.0" font-size="15" fill="#111" text-anchor="middle" font-weight="bold" font-family="sans-serif">💻 Laptop: web app</text>
+<text x="149.0" y="112.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">1. you pick an MP3</text>
+<text x="149.0" y="131.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">2. browser decodes it</text>
+<text x="149.0" y="150.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">3. 22050 numbers / second</text>
+<text x="149.0" y="169.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">4. sends chunks of 1024</text>
+<text x="149.0" y="188.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">    numbers (with credits)</text>
+<rect x="360.0" y="60.0" width="220.0" height="175.0" rx="12" fill="#fff4d6" stroke="#333" stroke-width="1.5"/>
+<text x="470.0" y="86.0" font-size="15" fill="#111" text-anchor="middle" font-weight="bold" font-family="sans-serif">📶 ESP32</text>
+<text x="470.0" y="112.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">receives the chunks</text>
+<text x="470.0" y="131.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">waiting room (buffer)</text>
+<text x="470.0" y="150.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">0.75 s of sound</text>
+<text x="470.0" y="169.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">sends numbers out</text>
+<text x="470.0" y="188.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">at exactly the right speed</text>
+<rect x="650.0" y="60.0" width="110.0" height="175.0" rx="12" fill="#dff4e4" stroke="#333" stroke-width="1.5"/>
+<text x="705.0" y="86.0" font-size="15" fill="#111" text-anchor="middle" font-weight="bold" font-family="sans-serif">🔊 Amp</text>
+<text x="705.0" y="112.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">numbers</text>
+<text x="705.0" y="131.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">→ voltage</text>
+<text x="705.0" y="150.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">(DAC +</text>
+<text x="705.0" y="169.0" font-size="12" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">amplifier)</text>
+<text x="820.0" y="152.0" font-size="40" fill="#111" text-anchor="middle" font-weight="normal" font-family="sans-serif">🔈</text>
+<text x="820.0" y="190.0" font-size="11" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif">speaker</text>
+<line x1="274.0" y1="118.0" x2="350.0" y2="118.0" stroke="#6c4cff" stroke-width="2.5" />
+<path d="M360,118 L348,112 L348,124 Z" stroke="#6c4cff" stroke-width="1" fill="#6c4cff" />
+<text x="317.0" y="109.0" font-size="11" fill="#6c4cff" text-anchor="middle" font-weight="normal" font-family="sans-serif">WiFi: sound</text>
+<line x1="360.0" y1="178.0" x2="284.0" y2="178.0" stroke="#c25e00" stroke-width="2.5" />
+<path d="M274,178 L286,172 L286,184 Z" stroke="#c25e00" stroke-width="1" fill="#c25e00" />
+<text x="317.0" y="197.0" font-size="11" fill="#c25e00" text-anchor="middle" font-weight="normal" font-family="sans-serif">credits, buttons</text>
+<line x1="580.0" y1="148.0" x2="640.0" y2="148.0" stroke="#1e88e5" stroke-width="2.5" />
+<path d="M650,148 L638,142 L638,154 Z" stroke="#1e88e5" stroke-width="1" fill="#1e88e5" />
+<text x="615.0" y="139.0" font-size="11" fill="#1e88e5" text-anchor="middle" font-weight="normal" font-family="sans-serif">I2S</text>
+<line x1="760.0" y1="148.0" x2="790.0" y2="148.0" stroke="#333" stroke-width="2.5" />
+<path d="M800,148 L788,142 L788,154 Z" stroke="#333" stroke-width="1" fill="#333" />
+<text x="780.0" y="139.0" font-size="11" fill="#333" text-anchor="middle" font-weight="normal" font-family="sans-serif"></text>
+<text x="470.0" y="280.0" font-size="12" fill="#555" text-anchor="middle" font-weight="normal" font-family="sans-serif">Buttons and knob → ESP32 → web app (&quot;button next&quot;, &quot;volume 60&quot;)</text>
+<text x="470.0" y="302.0" font-size="12" fill="#555" text-anchor="middle" font-weight="normal" font-family="sans-serif">The web app decides what to do, because it knows the playlist.</text>
+</svg>

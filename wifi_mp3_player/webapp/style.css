@@ -1,0 +1,156 @@
+/* ============================================================
+   style.css - how the web app looks.
+   Challenge: change the colours below to make it your own!
+   ============================================================ */
+
+:root {
+  --background: #f4f1ff;
+  --card: #ffffff;
+  --text: #1f1d2b;
+  --muted: #6b6880;
+  --accent: #6c4cff;        /* buttons, progress bar */
+  --accent-text: #ffffff;
+  --border: #e3def5;
+  --good: #1fa463;          /* connected */
+  --bad: #d64545;           /* disconnected */
+  --wait: #e5a50a;          /* connecting */
+  --log-bg: #15131f;
+  --log-text: #d8d4f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #14121c;
+    --card: #1f1c2b;
+    --text: #eceaf6;
+    --muted: #a19db8;
+    --accent: #8f76ff;
+    --border: #322e45;
+    --log-bg: #0c0b12;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.45;
+}
+
+header, main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+header { padding-top: 24px; }
+h1 { margin: 0 0 4px; font-size: 1.8rem; }
+h2 { margin: 0 0 12px; font-size: 1.1rem; }
+.subtitle { margin: 0 0 16px; color: var(--muted); }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.row { display: flex; gap: 8px; }
+.row input { flex: 1; min-width: 0; }
+
+input[type="text"] {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--background);
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--background);
+  color: var(--text);
+  cursor: pointer;
+}
+button:hover { filter: brightness(0.95); }
+button:disabled { opacity: 0.4; cursor: default; }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+
+/* ----- Connection status ----- */
+.status { margin: 12px 0 0; color: var(--muted); }
+.dot {
+  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--bad); vertical-align: middle;
+}
+.dot.connected { background: var(--good); }
+.dot.connecting { background: var(--wait); }
+.help { color: var(--muted); font-size: 0.9rem; margin: 8px 0 0; }
+code { background: var(--background); padding: 1px 5px; border-radius: 5px; font-size: 0.9em; }
+
+/* ----- Now playing ----- */
+.now-title { font-size: 1.2rem; font-weight: 600; margin: 0 0 12px; overflow-wrap: anywhere; }
+.progress-row { display: flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums; color: var(--muted); }
+.progress { flex: 1; height: 8px; border-radius: 4px; background: var(--border); overflow: hidden; }
+#progress-bar { height: 100%; width: 0; background: var(--accent); transition: width 0.2s linear; }
+
+.controls { display: flex; justify-content: center; gap: 16px; margin: 16px 0; }
+.controls button { font-size: 1.4rem; width: 56px; height: 56px; padding: 0; border-radius: 50%; }
+.controls button.big { width: 72px; height: 72px; font-size: 1.8rem; }
+
+.volume-row { display: flex; align-items: center; gap: 10px; }
+.volume-row input { flex: 1; accent-color: var(--accent); }
+#volume-value { width: 2.5em; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ----- Playlist ----- */
+#playlist { margin: 0 0 12px; padding: 0; list-style: none; counter-reset: song; }
+#playlist li {
+  counter-increment: song;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 8px; cursor: pointer;
+}
+#playlist li::before { content: counter(song) "."; color: var(--muted); width: 1.6em; }
+#playlist li:hover { background: var(--background); }
+#playlist li.current { background: var(--accent); color: var(--accent-text); }
+#playlist li.current::before { color: var(--accent-text); }
+#playlist .name { flex: 1; overflow-wrap: anywhere; }
+#playlist .duration { font-variant-numeric: tabular-nums; opacity: 0.8; }
+#playlist .remove { padding: 2px 8px; border: none; background: transparent; color: inherit; opacity: 0.6; }
+
+.dropzone {
+  display: block; text-align: center; padding: 18px;
+  border: 2px dashed var(--border); border-radius: 12px; color: var(--muted); cursor: pointer;
+}
+.dropzone.dragging { border-color: var(--accent); color: var(--accent); }
+.dropzone input { display: none; }
+
+/* ----- Message log ----- */
+summary { cursor: pointer; list-style: none; }
+summary h2 { display: inline; }
+summary::before { content: "▸ "; }
+details[open] summary::before { content: "▾ "; }
+.stats { font-variant-numeric: tabular-nums; color: var(--muted); margin: 12px 0 6px; }
+.check { display: block; margin-bottom: 8px; color: var(--muted); font-size: 0.9rem; }
+.log {
+  height: 220px; overflow-y: auto; margin-bottom: 8px; padding: 8px 10px;
+  background: var(--log-bg); color: var(--log-text); border-radius: 10px;
+  font-family: ui-monospace, Consolas, monospace; font-size: 0.85rem;
+}
+.log .in { color: #7ee2a8; }
+.log .out { color: #9fb7ff; }
+.log .info { color: #b8b3cf; font-style: italic; }
+.log .error { color: #ff8a8a; }
+
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+@media (max-width: 480px) {
+  .controls { gap: 10px; }
+  h1 { font-size: 1.5rem; }
+}
