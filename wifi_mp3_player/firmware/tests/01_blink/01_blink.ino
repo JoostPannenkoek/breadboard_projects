@@ -23,7 +23,9 @@ void setup() {
 // loop() runs AGAIN and AGAIN, forever.
 void loop() {
   digitalWrite(LED_PIN, HIGH);  // HIGH = 3.3 volts -> LED on
+  Serial.println("ON");
   delay(BLINK_TIME_MS);         // wait (in milliseconds, 1000 ms = 1 second)
   digitalWrite(LED_PIN, LOW);   // LOW = 0 volts -> LED off
+  Serial.println("OFF");
   delay(BLINK_TIME_MS);
 }
