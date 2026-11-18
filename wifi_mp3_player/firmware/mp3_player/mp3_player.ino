@@ -16,7 +16,7 @@
 #include "config.h"
 #include "audio.h"
 #include "controls.h"
-#include "network.h"
+#include "mp3_network.h"
 
 void setup() {
   Serial.begin(115200);

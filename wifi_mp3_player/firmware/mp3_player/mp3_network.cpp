@@ -6,7 +6,7 @@
 //    - TEXT messages are commands, like "volume 50" or "button next"
 //    - BINARY messages are sound: 1024 samples per message
 // ============================================================
-#include "network.h"
+#include "mp3_network.h"
 #include "config.h"
 #include "secrets.h"
 #include "audio.h"
