@@ -133,6 +133,26 @@ Run `02_first_sound` while you check this. Hold the headphones a little away fro
 **It hisses or hums a bit**
 - [ ] A soft hiss with the volume up is normal. A loud hum? Check wire 19 (GND).
 
+**Loud noise while music plays, and the music itself is very faint**
+
+Pause the music, or turn the volume to 0. Does the noise stop? Then the DAC is getting the right wires, but it reads the numbers wrong. That's a problem with the **signal**, not with the solder joints or your headphones.
+- [ ] Upload the **newest** `02_first_sound` and `mp3_player`. Older versions sent 16-bit samples, and the DAC doesn't like those. The new code puts every sample in a 32-bit "box" (look for `* 65536` in the code).
+- [ ] Still noisy? The I2S signals take a long trip: from the ESP32 to the amplifier, and from there along the long wires to the DAC. That can mess up the bits. Connect the DAC **straight to the ESP32** instead:
+  1. 🔌 Unplug the USB cable.
+  2. Take out wires **4, 5 and 6** (ESP32 → amplifier) and wires **20, 21 and 22** (amplifier → DAC).
+  3. Plug in three long wires, straight from the ESP32 to the DAC:
+
+     | Colour | From | To |
+     |---|---|---|
+     | yellow | `j6` (D27) | `f58` (WSEL) |
+     | green | `j7` (D26) | `f60` (BCLK) |
+     | blue | `j8` (D25) | `f59` (DIN) |
+
+     Green and blue cross, just like before.
+  4. Plug in the USB cable and run `02_first_sound` again.
+
+  Now the speaker stays **silent**, because the amplifier doesn't get any sound wires. Your player has become a headphones-only player! To use the speaker again, put wires 4, 5 and 6 back.
+
 **The speaker won't switch off**
 - [ ] Is wire 23 from `j24` (amp SD) to the **−** rail? See [Speaker off](09_extra_headphones.md#speaker-off-one-extra-wire).
 
