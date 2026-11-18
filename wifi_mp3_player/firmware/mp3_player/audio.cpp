@@ -37,7 +37,7 @@ static void handleRequest() {
   underrun = false;
   if (request == REQ_START) {
     if (requestedRate != currentRate) {
-      i2s.configureTX(requestedRate, I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_STEREO);
+      i2s.configureTX(requestedRate, I2S_DATA_BIT_WIDTH_32BIT, I2S_SLOT_MODE_STEREO);
       currentRate = requestedRate;
     }
     streaming = true;
@@ -50,7 +50,7 @@ static void handleRequest() {
 
 static void audioTask(void *) {
   int16_t mono[FRAMES];                      // samples from the web app (one channel)
-  int16_t stereo[FRAMES * 2];                // what we send to the amplifier (left + right)
+  int32_t stereo[FRAMES * 2];                // what we send to the amplifier (left + right, 32 bits each)
   int bytesSinceCredit = 0;
   bool hadSound = false;
 
@@ -73,8 +73,10 @@ static void audioTask(void *) {
       int vol = volume;
       for (int i = 0; i < frames; i++) {
         int16_t sample = (int32_t)mono[i] * vol / 100;
-        stereo[i * 2] = sample;
-        stereo[i * 2 + 1] = sample;
+        // I2S sends 32 bits per sample: our 16-bit number goes in the top half.
+        // (* 65536 shifts it up by 16 bits.) The headphone DAC needs this.
+        stereo[i * 2] = sample * 65536;        // left
+        stereo[i * 2 + 1] = sample * 65536;    // right
       }
       lastSoundMs = millis();
       hadSound = true;
@@ -90,7 +92,7 @@ static void audioTask(void *) {
     } else {
       // Nothing to play: send silence, so the speaker stays quiet and doesn't "pop".
       frames = paused ? FRAMES : 64;
-      memset(stereo, 0, frames * 2 * sizeof(int16_t));
+      memset(stereo, 0, frames * 2 * sizeof(int32_t));
       if (streaming && !paused && hadSound) {
         underrun = true;                     // the waiting room ran empty!
         hadSound = false;
@@ -99,7 +101,7 @@ static void audioTask(void *) {
 
     // 4. Send to the amplifier. This waits until the amplifier is ready for more,
     //    which automatically makes us go at exactly the right speed.
-    i2s.write((uint8_t *)stereo, frames * 2 * sizeof(int16_t));
+    i2s.write((uint8_t *)stereo, frames * 2 * sizeof(int32_t));
   }
 }
 
@@ -109,11 +111,11 @@ static void audioTask(void *) {
 void audioBegin() {
   buffer = xStreamBufferCreate(BUFFER_BYTES, 1);
   i2s.setPins(PIN_I2S_BCLK, PIN_I2S_LRC, PIN_I2S_DIN);
-  if (!i2s.begin(I2S_MODE_STD, SAMPLE_RATE, I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_STEREO)) {
+  if (!i2s.begin(I2S_MODE_STD, SAMPLE_RATE, I2S_DATA_BIT_WIDTH_32BIT, I2S_SLOT_MODE_STEREO)) {
     Serial.println("ERROR: could not start I2S. Check the pin numbers in config.h.");
   }
   // Run the audio task on core 1 with a high priority, so music never waits.
-  xTaskCreatePinnedToCore(audioTask, "audio", 4096, NULL, 5, NULL, 1);
+  xTaskCreatePinnedToCore(audioTask, "audio", 8192, NULL, 5, NULL, 1);
 }
 
 static void sendRequest(Request r) {

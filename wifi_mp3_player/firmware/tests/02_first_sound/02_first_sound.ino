@@ -43,7 +43,7 @@ I2SClass i2s;
 // Plays one note. frequency = 0 means silence.
 void playNote(int frequency, int lengthMs) {
   const int BLOCK = 256;            // we calculate 256 samples at a time
-  int16_t block[BLOCK * 2];         // *2 because we send left AND right
+  int32_t block[BLOCK * 2];         // *2 because we send left AND right
   int totalSamples = SAMPLE_RATE * lengthMs / 1000;
   int fadeSamples = SAMPLE_RATE / 200;  // 5 ms fade in/out so it doesn't "click"
   float phase = 0;                  // where we are in the wave (0..2*PI)
@@ -63,17 +63,20 @@ void playNote(int frequency, int lengthMs) {
       phase += step;
       if (phase > 2 * PI) phase -= 2 * PI;
 
-      block[i * 2] = sample;        // left
-      block[i * 2 + 1] = sample;    // right
+      // I2S sends 32 bits per sample: our 16-bit number goes in the top half.
+      // (* 65536 shifts it up by 16 bits.) Both the amplifier and the
+      // headphone DAC understand this.
+      block[i * 2] = sample * 65536;        // left
+      block[i * 2 + 1] = sample * 65536;    // right
     }
-    i2s.write((uint8_t *)block, count * 2 * sizeof(int16_t));
+    i2s.write((uint8_t *)block, count * 2 * sizeof(int32_t));
   }
 }
 
 void setup() {
   Serial.begin(115200);
   i2s.setPins(PIN_I2S_BCLK, PIN_I2S_LRC, PIN_I2S_DIN);
-  if (!i2s.begin(I2S_MODE_STD, SAMPLE_RATE, I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_STEREO)) {
+  if (!i2s.begin(I2S_MODE_STD, SAMPLE_RATE, I2S_DATA_BIT_WIDTH_32BIT, I2S_SLOT_MODE_STEREO)) {
     Serial.println("Oops: could not start I2S. Check the pin numbers.");
     while (true) delay(1000);
   }

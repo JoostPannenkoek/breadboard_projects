@@ -72,7 +72,7 @@ In `firmware/mp3_player/audio.cpp`, the **audio task** runs all the time, next t
 `i2s.write()` waits until the amplifier is ready for more. That automatically makes the audio task go at exactly the right speed.
 
 **I2S** uses three wires:
-- **BCLK** (bit clock) ticks once for every bit: 22050 samples × 16 bits × 2 channels = **705,600 ticks per second**!
+- **BCLK** (bit clock) ticks once for every bit: 22050 samples × 32 bits × 2 channels = **1,411,200 ticks per second**! (Our samples are 16 bits, but I2S sends each one in a 32-bit "box", with the sample in the top half. Some chips, like the headphone DAC, need it that way.)
 - **LRC** (left/right clock) says whether the current sample is for the left or the right channel.
 - **DIN** (data) carries the bits of the samples, one per tick.
 

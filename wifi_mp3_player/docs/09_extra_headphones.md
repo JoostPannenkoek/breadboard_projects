@@ -112,8 +112,8 @@ Ears can't be repaired, so take care of them:
 The web app sends **mono** sound: one channel. In `firmware/mp3_player/audio.cpp`, the audio task copies every sample into the left **and** the right channel:
 
 ```cpp
-stereo[i * 2] = sample;        // left
-stereo[i * 2 + 1] = sample;    // right
+stereo[i * 2] = sample * 65536;        // left
+stereo[i * 2 + 1] = sample * 65536;    // right
 ```
 
 The speaker amplifier mixes left and right together anyway. But the DAC sends left to your left ear and right to your right ear. So with headphones, **real stereo** is possible! That's a challenge in [lesson 8](08_challenges.md#-real-stereo-for-headphones).
